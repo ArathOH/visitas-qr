@@ -1,0 +1,17 @@
+name: Deploy to Firebase Hosting
+on:
+  push:
+    branches: [ "main" ]   # o la que uses
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm ci
+      - run: npm run build
+      - run: npm i -g firebase-tools
+      - run: firebase use qrgenerator-7168b --token "$FIREBASE_TOKEN"
+      - run: firebase deploy --only hosting --token "$FIREBASE_TOKEN"
